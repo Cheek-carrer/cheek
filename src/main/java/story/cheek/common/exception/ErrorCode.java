@@ -40,7 +40,7 @@ public enum ErrorCode {
 
     DUPLICATED_FOLLOW(400, "C_014", "이미 팔로우한 유저입니다"),
 
-    FORBIDDEN_FOLLOW_DELETE(401, "C_015", "Follow를 삭제할 권한이 없습니다.");
+    FORBIDDEN_FOLLOW_DELETE(401, "C_015", "Follow를 삭제할 권한이 없습니다."),
 
     NOT_ADMIN(400, "C_016", "Admin 사용자가 아닙니다."),
   
