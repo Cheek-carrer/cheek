@@ -58,7 +58,9 @@ public enum ErrorCode {
   
     MAIL_CODE_NOT_MATCH(400, "C_021", "메일 인증 코드가 일치하지 않습니다."),
   
-    MAIL_REQUEST_NOT_FOUND(400, "C_022", "인증 코드를 먼저 발급해주세요.");
+    MAIL_REQUEST_NOT_FOUND(400, "C_022", "인증 코드를 먼저 발급해주세요."),
+
+    DUPLICATED_STORY_LIKE(400, "C_023", "이미 좋아요한 스토리입니다.");
 
     private final int status;
     private final String code;
