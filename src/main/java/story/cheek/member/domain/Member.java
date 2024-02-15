@@ -55,7 +55,6 @@ public class Member extends BaseEntity {
     private String providerId;
 
     @OneToOne(mappedBy = "member")
-    @JoinColumn(name = "application_id")
     private Application application;
 
     @OneToMany(mappedBy = "reportingMember")
