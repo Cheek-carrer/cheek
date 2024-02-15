@@ -1,16 +1,9 @@
 package story.cheek.scrap.service;
 
-import static story.cheek.common.exception.ErrorCode.*;
-
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import story.cheek.common.exception.NotFoundMemberException;
-import story.cheek.common.exception.NotFoundScrapException;
-import story.cheek.common.exception.NotFoundStoryException;
-import story.cheek.common.exception.ScrapDuplicationException;
-import story.cheek.common.exception.ScrapForbiddenException;
+import story.cheek.common.exception.*;
 import story.cheek.member.domain.Member;
 import story.cheek.member.repository.MemberRepository;
 import story.cheek.scrap.dto.response.ScrapResponse;
@@ -18,6 +11,10 @@ import story.cheek.scrap.repository.ScrapRepository;
 import story.cheek.story.domain.Scrap;
 import story.cheek.story.domain.Story;
 import story.cheek.story.repository.StoryRepository;
+
+import java.util.List;
+
+import static story.cheek.common.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -60,7 +57,7 @@ public class ScrapService {
     }
 
     private void validateScrapDelete(Member member, Scrap scrap) {
-        if (member.isScrapPermission(scrap)) {
+        if (member.hasAuthority(scrap.getMember().getId())) {
             throw new ScrapForbiddenException(FORBIDDEN_SCRAP_DELETE);
         }
     }

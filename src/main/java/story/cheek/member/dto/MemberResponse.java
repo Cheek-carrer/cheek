@@ -12,7 +12,7 @@ public record MemberResponse(
         String image,
         boolean isMentor
 ) {
-    public static MemberResponse of(Member member) {
+    public static MemberResponse from(Member member) {
         return new MemberResponse(
                 member.getId(),
                 member.getOccupation(),

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import story.cheek.member.domain.Member;
-import story.cheek.report.domain.Report;
 import story.cheek.report.dto.ReportRequest;
 import story.cheek.report.service.ReportService;
 import story.cheek.security.CurrentMember;

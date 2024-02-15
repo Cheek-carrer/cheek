@@ -1,6 +1,5 @@
 package story.cheek.report.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import story.cheek.member.domain.Member;
