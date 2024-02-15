@@ -71,4 +71,12 @@ public class Story extends BaseEntity {
                 writer
         );
     }
+
+    public void like() {
+        likeCount++;
+    }
+
+    public void dislike() {
+        likeCount--;
+    }
 }

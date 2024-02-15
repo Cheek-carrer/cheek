@@ -40,7 +40,7 @@ public enum ErrorCode {
 
     DUPLICATED_FOLLOW(400, "C_014", "이미 팔로우한 유저입니다"),
 
-    FORBIDDEN_FOLLOW_DELETE(401, "C_015", "Follow를 삭제할 권한이 없습니다.");
+    FORBIDDEN_FOLLOW_DELETE(401, "C_015", "Follow를 삭제할 권한이 없습니다."),
 
     NOT_ADMIN(400, "C_016", "Admin 사용자가 아닙니다."),
   
@@ -58,7 +58,10 @@ public enum ErrorCode {
   
     MAIL_CODE_NOT_MATCH(400, "C_021", "메일 인증 코드가 일치하지 않습니다."),
   
-    MAIL_REQUEST_NOT_FOUND(400, "C_022", "인증 코드를 먼저 발급해주세요.");
+    MAIL_REQUEST_NOT_FOUND(400, "C_022", "인증 코드를 먼저 발급해주세요."),
+
+    DUPLICATED_STORY_LIKE(400, "C_023", "이미 좋아요한 스토리입니다."),
+    STORY_LIKE_NOT_FOUND(400, "C_024", "해당 스토리를 좋아요하지 않았습니다.");
 
     private final int status;
     private final String code;
