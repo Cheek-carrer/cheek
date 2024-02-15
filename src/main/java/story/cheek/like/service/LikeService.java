@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import story.cheek.common.exception.DuplicateLikeException;
+import story.cheek.common.exception.NotFoundLikeException;
 import story.cheek.common.exception.NotFoundStoryException;
 import story.cheek.like.domain.Like;
 import story.cheek.like.repository.LikeRepository;
@@ -28,6 +29,20 @@ public class LikeService {
         Like like = Like.createLike(member, story);
 
         return likeRepository.save(like).getId();
+    }
+
+    @Transactional
+    public void cancelStoryLike(Member member, Long storyId) {
+        Story story = findStory(storyId);
+        Like like = findLikeByMemberAndStory(member, story);
+        story.dislike();
+        likeRepository.delete(like);
+    }
+
+    private Like findLikeByMemberAndStory(Member member, Story story) {
+        Like like = likeRepository.findByMemberAndStory(member, story)
+                .orElseThrow(() -> new NotFoundLikeException(STORY_LIKE_NOT_FOUND));
+        return like;
     }
 
     private Story findStory(Long storyId) {

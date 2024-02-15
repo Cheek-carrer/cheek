@@ -25,4 +25,12 @@ public class LikeController {
         return ResponseEntity.created(URI.create("/api/v1/likes/" + likeId))
                 .build();
     }
+
+    @PostMapping("/cancellations/{storyId}")
+    public ResponseEntity<Void> delete(@CurrentMember Member member, @PathVariable Long storyId) {
+        likeService.cancelStoryLike(member, storyId);
+
+        return ResponseEntity.noContent()
+                .build();
+    }
 }
