@@ -106,7 +106,7 @@ public class Member extends BaseEntity {
     }
 
     public boolean hasAuthority(Long memberId) {
-        return !this.id.equals(memberId);
+        return this.id.equals(memberId);
     }
 
     public boolean isAdmin() {
