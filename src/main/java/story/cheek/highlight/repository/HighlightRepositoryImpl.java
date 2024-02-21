@@ -46,6 +46,10 @@ public class HighlightRepositoryImpl implements HighlightRepositoryCustom {
     }
 
     private SliceResponse<HighlightResponse> convertToSlice(List<HighlightResponse> highlights) {
+        if (highlights.size() == 0) {
+            return SliceResponse.of(highlights, false, null);
+        }
+
         boolean hasNext = existNextPage(highlights);
         String nextCursor = generateCursor(highlights);
 

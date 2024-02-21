@@ -104,6 +104,10 @@ public class StoryRepositoryImpl implements StoryRepositoryCustom {
     }
 
     private SliceResponse<StoryResponse> convertToSlice(List<StoryResponse> stories, SortType sortType) {
+        if (stories.size() == 0) {
+            return SliceResponse.of(stories, false, null);
+        }
+
         boolean hasNext = existNextPage(stories);
         String nextCursor = generateCursor(stories, sortType);
 
