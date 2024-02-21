@@ -1,7 +1,9 @@
 package story.cheek.story.repository;
 
+import static story.cheek.highlight.domain.QStoryHighlight.storyHighlight;
 import static story.cheek.story.domain.QStory.*;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.StringExpressions;
@@ -11,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import story.cheek.common.constant.SortType;
 import story.cheek.common.dto.SliceResponse;
+import story.cheek.highlight.domain.Highlight;
+import story.cheek.highlight.domain.QStoryHighlight;
 import story.cheek.story.dto.response.StoryResponse;
 
 @RequiredArgsConstructor
@@ -55,6 +59,30 @@ public class StoryRepositoryImpl implements StoryRepositoryCustom {
                 .fetch();
 
         return convertToSlice(stories, sortType);
+    }
+
+    @Override
+    public SliceResponse<StoryResponse> findAllByHighlightOrderByIdDesc(
+            String cursor,
+            Highlight highlight,
+            SortType sortType) {
+        List<StoryResponse> stories = queryFactory.select(Projections.constructor(StoryResponse.class,
+                        story.id,
+                        story.imageUrl,
+                        story.createdAt,
+                        story.likeCount))
+                .from(story)
+                .join(story.storyHighlights, storyHighlight)
+                .where(highlightIdEq(highlight),
+                        ltStoryId(cursor))
+                .orderBy(story.id.desc())
+                .fetch();
+
+        return convertToSlice(stories, sortType);
+    }
+
+    private BooleanExpression highlightIdEq(Highlight highlight) {
+        return storyHighlight.highlight.id.eq(highlight.getId());
     }
 
     private BooleanExpression ltStoryId(String cursor) {

@@ -6,10 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import story.cheek.common.constant.SortType;
+import story.cheek.common.exception.ErrorCode;
+import story.cheek.common.exception.NotFoundHighlightException;
 import story.cheek.common.exception.NotFoundQuestionException;
 import story.cheek.common.exception.NotFoundStoryException;
 import story.cheek.common.exception.StoryForbiddenException;
 import story.cheek.common.image.S3Service;
+import story.cheek.highlight.domain.Highlight;
+import story.cheek.highlight.repository.HighlightRepository;
 import story.cheek.member.domain.Member;
 import story.cheek.question.domain.Question;
 import story.cheek.question.repository.QuestionRepository;
@@ -26,6 +30,7 @@ public class StoryService {
 
     private final StoryRepository storyRepository;
     private final QuestionRepository questionRepository;
+    private final HighlightRepository highlightRepository;
     private final S3Service s3Service;
 
     @Transactional
@@ -68,6 +73,19 @@ public class StoryService {
         return storyRepository.findAllByOrderByLikeCountDesc(cursor, sortType);
     }
 
+    public SliceResponse<StoryResponse> findAllByHighlightId(
+            Long highlightId,
+            String cursor,
+            SortType sortType
+    ) {
+        Highlight highlight = findHighlight(highlightId);
+        return storyRepository.findAllByHighlightOrderByIdDesc(cursor, highlight, sortType);
+    }
+
+    private Highlight findHighlight(Long highlightId) {
+        return highlightRepository.findById(highlightId)
+                .orElseThrow(() -> new NotFoundHighlightException(HIGHLIGHT_NOT_FOUND));
+    }
 
     private void validateStoryCreate(Member member) {
         if (!member.canMakeStory()) {

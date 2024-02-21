@@ -65,4 +65,15 @@ public class StoryController {
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/highlights")
+    public ResponseEntity<SliceResponse<StoryResponse>> findAllByHighlight(
+            @RequestParam("id") Long highlightId,
+            SortType sortType,
+            @RequestParam(required = false) String cursor
+    ) {
+
+        SliceResponse<StoryResponse> response = storyService.findAllByHighlightId(highlightId, cursor, sortType);
+        return ResponseEntity.ok(response);
+    }
 }

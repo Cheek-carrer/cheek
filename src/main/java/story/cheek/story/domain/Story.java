@@ -10,11 +10,15 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 import story.cheek.common.domain.BaseEntity;
+import story.cheek.highlight.domain.StoryHighlight;
 import story.cheek.member.domain.Member;
 import story.cheek.question.domain.Occupation;
 import story.cheek.question.domain.Question;
@@ -45,6 +49,9 @@ public class Story extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @OneToMany(mappedBy = "story")
+    private List<StoryHighlight> storyHighlights = new ArrayList<>();
 
     private Story(
             Occupation occupation,
