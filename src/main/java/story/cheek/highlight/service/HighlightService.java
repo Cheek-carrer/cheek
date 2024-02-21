@@ -9,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import story.cheek.common.dto.SliceResponse;
-import story.cheek.common.exception.ErrorCode;
 import story.cheek.common.exception.ForbiddenHighlightException;
 import story.cheek.common.exception.NotFoundHighlightException;
 import story.cheek.common.exception.NotFoundMemberException;
 import story.cheek.common.exception.NotFoundStoryException;
+import story.cheek.common.exception.NotFoundStoryHighlightException;
 import story.cheek.common.exception.StoryForbiddenException;
 import story.cheek.highlight.domain.Highlight;
 import story.cheek.highlight.domain.StoryHighlight;
@@ -71,9 +71,29 @@ public class HighlightService {
         return story.getId();
     }
 
+    public void deleteStory(Member member, Long storyId, Long highlightId) {
+        Highlight highlight = findHighlight(highlightId);
+        Story story = findStory(storyId);
+        validateHighlightStoryDelete(member, story);
+        validateHighlightUpdate(member, highlight);
+        StoryHighlight storyHighlight = findStoryHighlight(highlight, story);
+        storyHighlightRepository.delete(storyHighlight);
+    }
+
+    private StoryHighlight findStoryHighlight(Highlight highlight, Story story) {
+        return storyHighlightRepository.findByHighlightAndStory(highlight, story)
+                .orElseThrow(() -> new NotFoundStoryHighlightException(STORY_HIGHLIGHT_NOT_FOUND));
+    }
+
+    private void validateHighlightStoryDelete(Member member, Story story) {
+        if (!member.hasAuthority(story.getMember().getId())) {
+            throw new ForbiddenHighlightException(FORBIDDEN_HIGHLIGHT_STORY_DELETE);
+        }
+    }
+
     private void validateHighlightUpdate(Member member, Highlight highlight) {
         if (!member.hasAuthority(highlight.getMember().getId())) {
-            throw new ForbiddenHighlightException(FORBIDDEN_HIGHLIGHT_FULL_ACCESS);
+            throw new ForbiddenHighlightException(FORBIDDEN_HIGHLIGHT_STORY_CREATE);
         }
     }
 

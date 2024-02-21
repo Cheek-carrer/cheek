@@ -50,6 +50,19 @@ public class HighlightController {
                 .build();
     }
 
+    @DeleteMapping("/stories/{storyId}")
+    public ResponseEntity<Void> removeStory(
+            @CurrentMember Member member,
+            @PathVariable Long storyId,
+            @RequestParam("highlightId") Long highlightId
+    ) {
+
+        highlightService.deleteStory(member, storyId, highlightId);
+
+        return ResponseEntity.noContent()
+                .build();
+    }
+
 
     @GetMapping("/members")
     public ResponseEntity<SliceResponse<HighlightResponse>> findAll(
