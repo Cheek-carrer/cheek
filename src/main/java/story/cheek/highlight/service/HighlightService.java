@@ -67,6 +67,7 @@ public class HighlightService {
         validateHighlightUpdate(member, highlight);
         StoryHighlight storyHighlight = StoryHighlight.of(highlight, story);
         storyHighlightRepository.save(storyHighlight);
+        story.addStoryHighlight(storyHighlight);
 
         return story.getId();
     }

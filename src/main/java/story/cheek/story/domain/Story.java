@@ -86,4 +86,8 @@ public class Story extends BaseEntity {
     public void dislike() {
         likeCount--;
     }
+
+    public void addStoryHighlight(StoryHighlight storyHighlight) {
+        storyHighlights.add(storyHighlight);
+    }
 }
