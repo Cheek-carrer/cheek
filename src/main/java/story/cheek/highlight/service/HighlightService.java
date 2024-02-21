@@ -60,7 +60,7 @@ public class HighlightService {
     }
 
     @Transactional
-    public Long saveHighlightStory(Member member, HighlightStoryCreateRequest request) {
+    public Long saveStoryHighlight(Member member, HighlightStoryCreateRequest request) {
         Story story = findStory(request.storyId());
         Highlight highlight = findHighlight(request.highlightId());
         validateStoryAdd(member, story);
@@ -71,7 +71,7 @@ public class HighlightService {
         return story.getId();
     }
 
-    public void deleteStory(Member member, Long storyId, Long highlightId) {
+    public void deleteStoryHighlight(Member member, Long storyId, Long highlightId) {
         Highlight highlight = findHighlight(highlightId);
         Story story = findStory(storyId);
         validateHighlightStoryDelete(member, story);

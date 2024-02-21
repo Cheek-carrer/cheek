@@ -44,7 +44,7 @@ public class HighlightController {
             @RequestBody HighlightStoryCreateRequest request
     ) {
 
-        Long storyId = highlightService.saveHighlightStory(member, request);
+        Long storyId = highlightService.saveStoryHighlight(member, request);
 
         return ResponseEntity.created(URI.create("/api/v1/highlights/stories/" + storyId))
                 .build();
@@ -57,7 +57,7 @@ public class HighlightController {
             @RequestParam("highlightId") Long highlightId
     ) {
 
-        highlightService.deleteStory(member, storyId, highlightId);
+        highlightService.deleteStoryHighlight(member, storyId, highlightId);
 
         return ResponseEntity.noContent()
                 .build();
