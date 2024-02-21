@@ -38,6 +38,41 @@ public class HighlightController {
                 .build();
     }
 
+    @DeleteMapping("/{highlightId}")
+    public ResponseEntity<Void> delete(
+            @CurrentMember Member member,
+            @PathVariable Long highlightId
+    ) {
+
+        highlightService.delete(member, highlightId);
+
+        return ResponseEntity.noContent()
+                .build();
+    }
+
+    @GetMapping
+    public ResponseEntity<SliceResponse<HighlightResponse>> findAllMyHighlight(
+        @CurrentMember Member member,
+        @RequestParam(required = false) String cursor
+    ) {
+
+        SliceResponse<HighlightResponse> response = highlightService.findAll(member.getId(), cursor);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/members")
+    public ResponseEntity<SliceResponse<HighlightResponse>> findAll(
+            @RequestParam("id") Long memberId,
+            @RequestParam(required = false) String cursor
+    ) {
+        // TODO 기획 : 하이라이트 정렬 기준은?
+
+        SliceResponse<HighlightResponse> response = highlightService.findAll(memberId, cursor);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/stories")
     public ResponseEntity<Void> addStory(
             @CurrentMember Member member,
@@ -58,31 +93,6 @@ public class HighlightController {
     ) {
 
         highlightService.deleteStoryHighlight(member, storyId, highlightId);
-
-        return ResponseEntity.noContent()
-                .build();
-    }
-
-
-    @GetMapping("/members")
-    public ResponseEntity<SliceResponse<HighlightResponse>> findAll(
-            @RequestParam("id") Long memberId,
-            @RequestParam(required = false) String cursor
-    ) {
-        // TODO 기획 : 하이라이트 정렬 기준은?
-
-        SliceResponse<HighlightResponse> response = highlightService.findAll(memberId, cursor);
-
-        return ResponseEntity.ok(response);
-    }
-
-    @DeleteMapping("/{highlightId}")
-    public ResponseEntity<Void> delete(
-            @CurrentMember Member member,
-            @PathVariable Long highlightId
-    ) {
-
-        highlightService.delete(member, highlightId);
 
         return ResponseEntity.noContent()
                 .build();
