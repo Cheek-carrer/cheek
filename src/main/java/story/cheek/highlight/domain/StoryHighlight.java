@@ -29,4 +29,13 @@ public class StoryHighlight extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "story_id")
     private Story story;
+
+    private StoryHighlight(Highlight highlight, Story story) {
+        this.highlight = highlight;
+        this.story = story;
+    }
+
+    public static StoryHighlight of(Highlight highlight, Story story) {
+        return new StoryHighlight(highlight, story);
+    }
 }

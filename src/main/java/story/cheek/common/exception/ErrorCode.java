@@ -64,7 +64,9 @@ public enum ErrorCode {
     STORY_LIKE_NOT_FOUND(400, "C_024", "해당 스토리를 좋아요하지 않았습니다."),
     HIGHLIGHT_NOT_FOUND(400, "C_025", "하이라이트를 찾을 수 없습니다."),
     FORBIDDEN_HIGHLIGHT_CREATE(400, "C_026", "하이라이트를 생성할 권한이 없습니다."),
-    FORBIDDEN_HIGHLIGHT_DELETE(400, "C_027", "하이라이트를 삭제할 권한이 없습니다.");
+    FORBIDDEN_HIGHLIGHT_DELETE(400, "C_027", "하이라이트를 삭제할 권한이 없습니다."),
+    FORBIDDEN_STORY_ADD(403, "C_028", "해당 스토리를 하이라이트에 추가할 권한이 없습니다."),
+    FORBIDDEN_HIGHLIGHT_FULL_ACCESS(403, "C_209", "하이라이트에 대한 FULL 접근 권한이 없습니다.");
 
 
     private final int status;

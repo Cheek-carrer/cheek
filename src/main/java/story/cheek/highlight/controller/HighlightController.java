@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import story.cheek.common.dto.SliceResponse;
 import story.cheek.highlight.dto.request.HighlightCreateRequest;
+import story.cheek.highlight.dto.request.HighlightStoryCreateRequest;
 import story.cheek.highlight.dto.response.HighlightResponse;
 import story.cheek.highlight.service.HighlightService;
 import story.cheek.member.domain.Member;
@@ -37,10 +38,24 @@ public class HighlightController {
                 .build();
     }
 
+    @PostMapping("/stories")
+    public ResponseEntity<Void> addStory(
+            @CurrentMember Member member,
+            @RequestBody HighlightStoryCreateRequest request
+    ) {
+
+        Long storyId = highlightService.saveHighlightStory(member, request);
+
+        return ResponseEntity.created(URI.create("/api/v1/highlights/stories/" + storyId))
+                .build();
+    }
+
+
     @GetMapping("/members")
     public ResponseEntity<SliceResponse<HighlightResponse>> findAll(
             @RequestParam("id") Long memberId,
-            @RequestParam(required = false) String cursor) {
+            @RequestParam(required = false) String cursor
+    ) {
         // TODO 기획 : 하이라이트 정렬 기준은?
 
         SliceResponse<HighlightResponse> response = highlightService.findAll(memberId, cursor);
