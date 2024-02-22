@@ -35,7 +35,7 @@ public class ApplicationRepositoryImpl implements ApplicationRepositoryCustom {
     }
 
     private SliceResponse<ApplicationResponse> convertToSlice(List<ApplicationResponse> applications) {
-        if (applications.size() == 0) {
+        if (applications.isEmpty()) {
             return SliceResponse.of(applications, false, null);
         }
 

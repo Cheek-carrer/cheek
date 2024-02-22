@@ -104,7 +104,7 @@ public class StoryRepositoryImpl implements StoryRepositoryCustom {
     }
 
     private SliceResponse<StoryResponse> convertToSlice(List<StoryResponse> stories, SortType sortType) {
-        if (stories.size() == 0) {
+        if (stories.isEmpty()) {
             return SliceResponse.of(stories, false, null);
         }
 

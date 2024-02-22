@@ -46,7 +46,7 @@ public class HighlightRepositoryImpl implements HighlightRepositoryCustom {
     }
 
     private SliceResponse<HighlightResponse> convertToSlice(List<HighlightResponse> highlights) {
-        if (highlights.size() == 0) {
+        if (highlights.isEmpty()) {
             return SliceResponse.of(highlights, false, null);
         }
 
