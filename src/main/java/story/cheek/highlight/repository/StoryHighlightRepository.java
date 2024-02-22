@@ -8,4 +8,6 @@ import story.cheek.story.domain.Story;
 
 public interface StoryHighlightRepository extends JpaRepository<StoryHighlight, Long> {
     Optional<StoryHighlight> findByHighlightAndStory(Highlight highlight, Story story);
+
+    boolean existsByHighlightAndStory(Highlight highlight, Story story);
 }

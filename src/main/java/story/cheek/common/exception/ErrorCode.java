@@ -68,7 +68,8 @@ public enum ErrorCode {
     FORBIDDEN_STORY_ADD(403, "C_028", "해당 스토리를 하이라이트에 추가할 권한이 없습니다."),
     FORBIDDEN_HIGHLIGHT_STORY_CREATE(403, "C_029", "하이라이트에 스토리를 추가할 권한이 없습니다."),
     FORBIDDEN_HIGHLIGHT_STORY_DELETE(403, "C_030", "하이라이트를 삭제할 권한이 없습니다."),
-    STORY_HIGHLIGHT_NOT_FOUND(400, "C_031", "해당 스토리가 하이라이트에 포함되어 있지 않습니다.");
+    STORY_HIGHLIGHT_NOT_FOUND(400, "C_031", "해당 스토리가 하이라이트에 포함되어 있지 않습니다."),
+    ALREADY_ADD_STORY_HIGHLIGHT(400, "C_032", "이미 해당 스토리를 하아라이트에 등록했습니다.");
 
 
     private final int status;

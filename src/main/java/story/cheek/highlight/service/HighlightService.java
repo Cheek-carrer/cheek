@@ -9,12 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import story.cheek.common.dto.SliceResponse;
+import story.cheek.common.exception.ErrorCode;
 import story.cheek.common.exception.ForbiddenHighlightException;
 import story.cheek.common.exception.NotFoundHighlightException;
 import story.cheek.common.exception.NotFoundMemberException;
 import story.cheek.common.exception.NotFoundStoryException;
 import story.cheek.common.exception.NotFoundStoryHighlightException;
 import story.cheek.common.exception.StoryForbiddenException;
+import story.cheek.common.exception.StoryHighlightDuplicateException;
 import story.cheek.highlight.domain.Highlight;
 import story.cheek.highlight.domain.StoryHighlight;
 import story.cheek.highlight.dto.request.HighlightCreateRequest;
@@ -65,11 +67,18 @@ public class HighlightService {
         Highlight highlight = findHighlight(request.highlightId());
         validateStoryAdd(member, story);
         validateHighlightUpdate(member, highlight);
+        validateDuplicateRegisterStoryHighlight(story, highlight);
         StoryHighlight storyHighlight = StoryHighlight.of(highlight, story);
         storyHighlightRepository.save(storyHighlight);
         story.addStoryHighlight(storyHighlight);
 
         return story.getId();
+    }
+
+    private void validateDuplicateRegisterStoryHighlight(Story story, Highlight highlight) {
+        if (storyHighlightRepository.existsByHighlightAndStory(highlight, story)) {
+            throw new StoryHighlightDuplicateException(ALREADY_ADD_STORY_HIGHLIGHT);
+        }
     }
 
     public void deleteStoryHighlight(Member member, Long storyId, Long highlightId) {
