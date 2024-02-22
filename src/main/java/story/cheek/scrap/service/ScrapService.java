@@ -57,7 +57,7 @@ public class ScrapService {
     }
 
     private void validateScrapDelete(Member member, Scrap scrap) {
-        if (member.hasAuthority(scrap.getMember().getId())) {
+        if (!member.hasAuthority(scrap.getMember().getId())) {
             throw new ScrapForbiddenException(FORBIDDEN_SCRAP_DELETE);
         }
     }

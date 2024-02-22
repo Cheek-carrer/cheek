@@ -45,7 +45,7 @@ public class FollowService {
         Follow follow = followRepository.findById(followId)
                 .orElseThrow(() -> new NotFoundFollowException(ErrorCode.FOLLOW_NOT_FOUND));
 
-        if (member.hasAuthority(follow.getFollowingMember().getId())) {
+        if (!member.hasAuthority(follow.getFollowingMember().getId())) {
             throw new ForbiddenFollowException(ErrorCode.FORBIDDEN_FOLLOW_DELETE);
         }
 
