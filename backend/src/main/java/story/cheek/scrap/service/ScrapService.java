@@ -29,7 +29,7 @@ public class ScrapService {
         Story story = storyRepository.findById(storyId)
                 .orElseThrow(() -> new NotFoundStoryException(STORY_NOT_FOUND));
 
-        validateDuplicateScrap(member);
+        validateDuplicateScrap(story, member);
         Scrap scrap = Scrap.of(member, story);
         scrapRepository.save(scrap);
 
@@ -40,7 +40,7 @@ public class ScrapService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NotFoundMemberException(MEMBER_NOT_FOUND));
 
-        return scrapRepository.findAllByMember(member)
+        return scrapRepository.findAllByMemberWithStoryOrderByIdDesc(member)
                 .stream()
                 .map(ScrapResponse::from)
                 .toList();
@@ -62,8 +62,8 @@ public class ScrapService {
         }
     }
 
-    private void validateDuplicateScrap(Member member) {
-        if (scrapRepository.existsByMember(member)) {
+    private void validateDuplicateScrap(Story story, Member member) {
+        if (scrapRepository.existsByMemberAndStory(member, story)) {
             throw new ScrapDuplicationException(ALREADY_STORY_SCRAP);
         }
     }

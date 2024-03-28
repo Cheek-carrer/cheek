@@ -116,4 +116,8 @@ public class Member extends BaseEntity {
     public void approveMentor() {
         isMentor = true;
     }
+
+    public boolean isActive() {
+        return status == Status.ACTIVE;
+    }
 }

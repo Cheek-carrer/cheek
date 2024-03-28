@@ -52,23 +52,25 @@ public class HighlightController {
 
     @GetMapping
     public ResponseEntity<SliceResponse<HighlightResponse>> findAllMyHighlight(
+        @RequestParam(defaultValue = "5") int pageSize,
         @CurrentMember Member member,
         @RequestParam(required = false) String cursor
     ) {
 
-        SliceResponse<HighlightResponse> response = highlightService.findAll(member.getId(), cursor);
+        SliceResponse<HighlightResponse> response = highlightService.findAll(pageSize, member.getId(), cursor);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/members")
     public ResponseEntity<SliceResponse<HighlightResponse>> findAll(
+            @RequestParam(defaultValue = "5") int pageSize,
             @RequestParam("id") Long memberId,
             @RequestParam(required = false) String cursor
     ) {
         // TODO 기획 : 하이라이트 정렬 기준은?
 
-        SliceResponse<HighlightResponse> response = highlightService.findAll(memberId, cursor);
+        SliceResponse<HighlightResponse> response = highlightService.findAll(pageSize, memberId, cursor);
 
         return ResponseEntity.ok(response);
     }

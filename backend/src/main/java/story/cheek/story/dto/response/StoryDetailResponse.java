@@ -13,7 +13,7 @@ public record StoryDetailResponse(
         LocalDateTime createdAt
 ) {
 
-    public static StoryDetailResponse of(Story story) {
+    public static StoryDetailResponse from(Story story) {
         return new StoryDetailResponse(
                 story.getId(),
                 story.getQuestion().getId(),

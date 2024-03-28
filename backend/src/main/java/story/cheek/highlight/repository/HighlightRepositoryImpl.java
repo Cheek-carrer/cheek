@@ -14,12 +14,10 @@ import story.cheek.member.domain.Member;
 @RequiredArgsConstructor
 public class HighlightRepositoryImpl implements HighlightRepositoryCustom {
 
-    private static final int PAGE_SIZE = 20;
-
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public SliceResponse<HighlightResponse> findAllByMemberOrderByIdDesc(Member member, String cursor) {
+    public SliceResponse<HighlightResponse> findAllByMemberOrderByIdDesc(int pageSize, Member member, String cursor) {
 
         List<HighlightResponse> highlights = queryFactory.select(Projections.constructor(HighlightResponse.class,
                         highlight.id,
@@ -28,9 +26,10 @@ public class HighlightRepositoryImpl implements HighlightRepositoryCustom {
                 .where(ltHighlightId(cursor),
                         isMatchMember(member))
                 .orderBy(highlight.id.desc())
+                .limit(pageSize + 1)
                 .fetch();
 
-        return convertToSlice(highlights);
+        return convertToSlice(highlights, pageSize);
     }
 
     private BooleanExpression isMatchMember(Member member) {
@@ -45,12 +44,12 @@ public class HighlightRepositoryImpl implements HighlightRepositoryCustom {
         return null;
     }
 
-    private SliceResponse<HighlightResponse> convertToSlice(List<HighlightResponse> highlights) {
+    private SliceResponse<HighlightResponse> convertToSlice(List<HighlightResponse> highlights, int pageSize) {
         if (highlights.isEmpty()) {
             return SliceResponse.of(highlights, false, null);
         }
 
-        boolean hasNext = existNextPage(highlights);
+        boolean hasNext = existNextPage(highlights, pageSize);
         String nextCursor = generateCursor(highlights);
 
         return SliceResponse.of(highlights, hasNext, nextCursor);
@@ -63,9 +62,9 @@ public class HighlightRepositoryImpl implements HighlightRepositoryCustom {
     }
 
 
-    private boolean existNextPage(List<HighlightResponse> highlights) {
-        if (highlights.size() > PAGE_SIZE) {
-            highlights.remove(PAGE_SIZE);
+    private boolean existNextPage(List<HighlightResponse> highlights, int pageSize) {
+        if (highlights.size() > pageSize) {
+            highlights.remove(pageSize);
             return true;
         }
 

@@ -11,6 +11,7 @@ import static story.cheek.common.exception.ErrorCode.MEMBER_NOT_FOUND;
 import static story.cheek.common.exception.ErrorCode.STORY_HIGHLIGHT_NOT_FOUND;
 import static story.cheek.common.exception.ErrorCode.STORY_NOT_FOUND;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,24 +55,21 @@ public class HighlightService {
     public void delete(Member member, Long highlightId) {
         Highlight highlight = findHighlight(highlightId);
         validateHighlightDelete(member, highlight);
-
-        highlight.getStoryHighlights().stream()
-                .forEach(storyHighlightRepository::delete);
-
-        highlightRepository.delete(highlight);
+        storyHighlightRepository.deleteAllByHighlightId(highlightId);
+        highlightRepository.deleteById(highlight.getId());
     }
 
-    public SliceResponse<HighlightResponse> findAll(Long memberId, String cursor) {
+    public SliceResponse<HighlightResponse> findAll(int pageSize, Long memberId, String cursor) {
         Member member = findMember(memberId);
-        return highlightRepository.findAllByMemberOrderByIdDesc(member, cursor);
+        return highlightRepository.findAllByMemberOrderByIdDesc(pageSize, member, cursor);
     }
 
     @Transactional
     public Long saveStoryHighlight(Member member, HighlightStoryCreateRequest request) {
         Story story = findStory(request.storyId());
         Highlight highlight = findHighlight(request.highlightId());
-        validateStoryAdd(member, story);
         validateHighlightUpdate(member, highlight);
+        validateStoryAdd(member, story);
         validateDuplicateRegisterStoryHighlight(story, highlight);
         StoryHighlight storyHighlight = StoryHighlight.of(highlight, story);
         storyHighlightRepository.save(storyHighlight);

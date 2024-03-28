@@ -1,7 +1,6 @@
 package story.cheek.question.controller;
 
 import java.net.URI;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import story.cheek.common.dto.SliceResponse;
 import story.cheek.member.domain.Member;
+import story.cheek.question.domain.Occupation;
 import story.cheek.question.dto.request.QuestionCreateRequest;
 import story.cheek.question.dto.request.QuestionUpdateRequest;
 import story.cheek.question.dto.response.QuestionDetailResponse;
@@ -59,10 +61,13 @@ public class QuestionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<QuestionResponse>> findAll(
-            @CurrentMember Member member
-    ) {
-        List<QuestionResponse> response = questionService.findAll(member);
+    public ResponseEntity<SliceResponse<QuestionResponse>> findAll(
+            @RequestParam(defaultValue = "5") int pageSize,
+            @RequestParam(required = false) String cursor,
+            @RequestParam(required = false) Occupation occupation
+            ) {
+
+        SliceResponse<QuestionResponse> response = questionService.findAll(pageSize, cursor, occupation);
         return ResponseEntity.ok(response);
     }
 }

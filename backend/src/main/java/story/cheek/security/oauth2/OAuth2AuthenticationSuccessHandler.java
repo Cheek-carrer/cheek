@@ -65,8 +65,10 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         // getDefaultTargetUrl 체크 && 쿠키
+        String email = extractEmail(authentication);
+
         String targetUrl = redirectUri.orElse(getDefaultTargetUrl());
-        String accessToken = tokenProvider.createAccessToken(authentication);
+        String accessToken = tokenProvider.createAccessToken(email);
         String refreshToken = tokenProvider.createRefreshToken();
 
         int cookieMaxAge = tokenProvider.getExpiration(refreshToken).intValue() / 60;
@@ -80,6 +82,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         return UriComponentsBuilder.fromUriString(targetUrl)
                 .queryParam("token", accessToken)
                 .build().toUriString();
+    }
+
+    private String extractEmail(Authentication authentication) {
+        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        return userPrincipal.getUsername();
     }
 
     private void saveRefreshToken(String refreshToken, Authentication authentication) {

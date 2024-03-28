@@ -12,7 +12,7 @@ public record QuestionDetailResponse(
         LocalDateTime updatedAt
 ) {
 
-    public static QuestionDetailResponse of(Question question) {
+    public static QuestionDetailResponse from(Question question) {
         return new QuestionDetailResponse(
                 question.getId(),
                 question.getOccupation(),

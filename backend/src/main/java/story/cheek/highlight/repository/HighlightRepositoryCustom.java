@@ -6,5 +6,5 @@ import story.cheek.member.domain.Member;
 
 public interface HighlightRepositoryCustom {
 
-    SliceResponse<HighlightResponse> findAllByMemberOrderByIdDesc(Member member, String cursor);
+    SliceResponse<HighlightResponse> findAllByMemberOrderByIdDesc(int pageSize, Member member, String cursor);
 }

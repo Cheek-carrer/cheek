@@ -76,7 +76,8 @@ public enum ErrorCode {
     FAILED_JSON_CONVERT(500, "C_035", "Json 변환에 실패했습니다."),
     FAILED_COMMUNICATION_FIREBASE(400, "C_036", "firebase와 통신중에 에러가 발생했습니다."),
     FORBIDDEN_NOTIFICATION_READ(403, "C_037", "알림을 읽을 권한이 없습니다."),
-    NOT_FOUND_NOTIFICATION(400, "C_038", "알림을 찾을 수 없습니다.");
+    NOT_FOUND_NOTIFICATION(400, "C_038", "알림을 찾을 수 없습니다."),
+    INACTIVE_MEMBER(400, "C_039", "차단된 유저입니다.");
 
     private final int status;
     private final String code;
